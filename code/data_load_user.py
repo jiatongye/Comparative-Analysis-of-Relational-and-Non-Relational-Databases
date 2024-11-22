@@ -60,7 +60,7 @@ def load_json_to_psql(json_file_path, table_name):
                     INSERT INTO "{table_name}" (
                         user_id, name, review_count, yelping_since, average_stars
                     ) VALUES (
-                        %(user_id)s, $(name)s, %(review_count)s, %(yelping_since)s, %(average_stars)s
+                        %(user_id)s, %(name)s, %(review_count)s, %(yelping_since)s, %(average_stars)s
                     )
                     ON CONFLICT (user_id) DO NOTHING;
                 ''', data_to_insert)
@@ -84,7 +84,7 @@ def load_json_to_psql(json_file_path, table_name):
             conn.close()
 
 def main():
-    json_file_path = '/Users/michelle/Desktop/finalproj101/data/yelp_dataset/yelp_academic_dataset_user.json'
+    json_file_path = '/Users/michelle/Desktop/data_101_finalproj/data/yelp_dataset/yelp_academic_dataset_user.json'
     table_name = 'User'
 
     load_json_to_psql(json_file_path, table_name)
