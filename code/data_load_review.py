@@ -18,7 +18,8 @@ def load_review_json_to_psql(json_file_path, table_name):
                 business_id VARCHAR(22) REFERENCES "Business" (business_id) ON DELETE CASCADE,
                 text TEXT,
                 stars INTEGER,
-                date DATE
+                date DATE,
+                useful INTEGER
             );
         ''')
 
@@ -41,15 +42,16 @@ def load_review_json_to_psql(json_file_path, table_name):
                         'business_id': data.get('business_id'),
                         'text': data.get('text'),
                         'stars': data.get('stars'),
-                        'date': data.get('date')
+                        'date': data.get('date'),
+                        'useful': data.get('useful')
                     })
 
                     if len(data_to_insert) >= 1000:
                         cur.executemany(f'''
                             INSERT INTO "{table_name}" (
-                                review_id, user_id, business_id, text, stars, date
+                                review_id, user_id, business_id, text, stars, date, useful
                             ) VALUES (
-                                %(review_id)s, %(user_id)s, %(business_id)s, %(text)s, %(stars)s, %(date)s
+                                %(review_id)s, %(user_id)s, %(business_id)s, %(text)s, %(stars)s, %(date)s, %(useful)s
                             )
                             ON CONFLICT (review_id) DO NOTHING;
                         ''', data_to_insert)
@@ -66,9 +68,9 @@ def load_review_json_to_psql(json_file_path, table_name):
             if data_to_insert:
                 cur.executemany(f'''
                     INSERT INTO "{table_name}" (
-                        review_id, user_id, business_id, text, stars, date
+                        review_id, user_id, business_id, text, stars, date, useful
                     ) VALUES (
-                        %(review_id)s, %(user_id)s, %(business_id)s, %(text)s, %(stars)s, %(date)s
+                        %(review_id)s, %(user_id)s, %(business_id)s, %(text)s, %(stars)s, %(date)s, $(useful)s
                     )
                     ON CONFLICT (review_id) DO NOTHING;
                 ''', data_to_insert)
@@ -92,7 +94,7 @@ def load_review_json_to_psql(json_file_path, table_name):
             conn.close()
 
 def main():
-    json_file_path = '/Users/michelle/Desktop/finalproj101/data/yelp_dataset/yelp_academic_dataset_review.json'
+    json_file_path = '/Users/michelle/Desktop/data_101_finalproj/data/yelp_dataset/yelp_academic_dataset_review.json'
     table_name = 'Review'
 
     load_review_json_to_psql(json_file_path, table_name)
