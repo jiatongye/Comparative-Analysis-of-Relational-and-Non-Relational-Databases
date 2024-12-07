@@ -4,7 +4,7 @@ import json
 dbname = "myinner_db"
 user = "mynonsuperuser"
 
-def load_json_to_psql(json_file_path, table_name):
+def load_user_json_to_psql(json_file_path, table_name):
     conn = None
     cur = None
     try:
@@ -84,10 +84,10 @@ def load_json_to_psql(json_file_path, table_name):
             conn.close()
 
 def main():
-    json_file_path = '/Users/michelle/Desktop/data_101_finalproj/data/yelp_dataset/yelp_academic_dataset_user.json'
+    json_file_path = '/Users/claudiawoo/data_101_finalproj/data/yelp_academic_dataset_user.json'
     table_name = 'User'
 
-    load_json_to_psql(json_file_path, table_name)
+    load_user_json_to_psql(json_file_path, table_name)
 
 if __name__ == "__main__":
     main()

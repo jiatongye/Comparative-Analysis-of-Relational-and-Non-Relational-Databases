@@ -92,7 +92,7 @@ def load_review_json_to_psql(json_file_path, table_name):
             conn.close()
 
 def main():
-    json_file_path = '/Users/michelle/Desktop/finalproj101/data/yelp_dataset/yelp_academic_dataset_review.json'
+    json_file_path = '/Users/claudiawoo/data_101_finalproj/data/yelp_academic_dataset_review.json'
     table_name = 'Review'
 
     load_review_json_to_psql(json_file_path, table_name)
