@@ -3,6 +3,7 @@ from pymongo import MongoClient
 client = MongoClient("mongodb://localhost:27017/")
 db = client['yelp_dataset']
 review = db['review']
+business = db['business']
 
 pipeline = [
 {"$limit": 1000},

@@ -8,11 +8,11 @@ businessCounts_pipeline = [
     {
         "$group": {
             "_id": "$state",  
-            "total_businesses": { "$sum": 1 }  # Count total businesses per state
+            "total_businesses": { "$sum": 1 } 
         }
     },
     {
-        "$merge": { "into": "BusinessCounts" }  # Create a new collection for BusinessCounts
+        "$merge": { "into": "BusinessCounts" }  
     }
 ]
 
@@ -20,16 +20,16 @@ business.aggregate(businessCounts_pipeline)
 
 takoutCounts_pipeline = [
     {
-        "$match": { "attributes.RestaurantsTakeOut": "True" }  # Filter by restaurants that offer takeout
+        "$match": { "attributes.RestaurantsTakeOut": "True" }  
     },
     {
         "$group": {
             "_id": "$state", 
-            "takeout_businesses": { "$sum": 1 }  # Count takeout businesses per state
+            "takeout_businesses": { "$sum": 1 } 
         }
     },
     {
-        "$merge": { "into": "TakeOutCounts" }  # Create a new collection for TakeOutCounts
+        "$merge": { "into": "TakeOutCounts" }  
     }
 ]
 
@@ -39,14 +39,14 @@ business.aggregate(takoutCounts_pipeline)
 proportion_pipeline = [
     {
         "$lookup": {
-            "from": "TakeOutCounts",  # Perform a join with TakeOutCounts
-            "localField": "_id",  # Join by 'state'
+            "from": "TakeOutCounts",  
+            "localField": "_id",  
             "foreignField": "_id",
             "as": "takeout_counts"
         }
     },
     {
-        "$unwind": "$takeout_counts"  # Flatten the array of matched results
+        "$unwind": "$takeout_counts"  
     },
     {
         "$addFields": {
@@ -66,9 +66,9 @@ proportion_pipeline = [
     },
     {
         "$project": {
-            "_id": 0,  # Exclude the '_id' field
-            "state": "$_id",  # Include the 'state' field
-            "takeout_proportion": 1  # Include the 'takeout_proportion' field
+            "_id": 0, 
+            "state": "$_id",  
+            "takeout_proportion": 1 
         }
     }
 ]
