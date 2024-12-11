@@ -33,3 +33,5 @@ tzcode=2024b=h00291cd_0
 tzdata=2024b=hc8b5060_0
 xz=5.2.6=h775f41a_0
 zstd=1.5.6=h915ae27_0
+dnspython==2.7.0
+pymongo==4.10.1
