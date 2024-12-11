@@ -4,7 +4,7 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client['yelp_dataset']
 business = db['business']
 
-result_business_counts = business.aggregate([
+businessCounts_pipeline = [
     {
         "$group": {
             "_id": "$state",  
@@ -14,10 +14,11 @@ result_business_counts = business.aggregate([
     {
         "$merge": { "into": "BusinessCounts" }  # Create a new collection for BusinessCounts
     }
-])
+]
 
+business.aggregate(businessCounts_pipeline)
 
-result_takeout_counts = business.aggregate([
+takoutCounts_pipeline = [
     {
         "$match": { "attributes.RestaurantsTakeOut": "True" }  # Filter by restaurants that offer takeout
     },
@@ -30,10 +31,12 @@ result_takeout_counts = business.aggregate([
     {
         "$merge": { "into": "TakeOutCounts" }  # Create a new collection for TakeOutCounts
     }
-])
+]
 
 
-results = db.BusinessCounts.aggregate([
+business.aggregate(takoutCounts_pipeline)
+
+proportion_pipeline = [
     {
         "$lookup": {
             "from": "TakeOutCounts",  # Perform a join with TakeOutCounts
@@ -68,10 +71,13 @@ results = db.BusinessCounts.aggregate([
             "takeout_proportion": 1  # Include the 'takeout_proportion' field
         }
     }
-])
+]
+
+results = db.BusinessCounts.aggregate(proportion_pipeline)
 
 
 print("Top 5 States by Takeout Proportion:")
 for result in results:
     print(result)
 
+print(db.command('explain', {'aggregate': 'business', 'pipeline': proportion_pipeline, 'cursor': {}}, verbosity='executionStats'))
