@@ -127,3 +127,9 @@ PostgreSQL: Demonstrated significant performance improvements with indexing and 
 MongoDB: Improved insertion speeds through indexing and data sharding for high-volume non-relational data.
 
 Recommendations: PostgreSQL is ideal for structured and relational data, while MongoDB excels in flexible, high-volume environments.
+
+## Conclusion
+
+This study provides valuable insights into the trade-offs between PostgreSQL and MongoDB for various data-intensive applications, helping developers and data engineers make informed database selection decisions.
+
+The final report can be found in the repository as `1-final-report.pdf`.
